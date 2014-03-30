@@ -2,6 +2,7 @@
 import System.IO (stdin)
 import Data.Monoid ((<>))
 import Data.Maybe (fromJust, catMaybes)
+import qualified Data.Map.Lazy as M
 
 import Data.Text as T hiding (map, repeat, take)
 import Data.Text.IO as T
@@ -32,7 +33,8 @@ showElement d cur = do
 showNode :: Node -> Maybe T.Text
 showNode (NodeElement el) =
     let Name ln ns pr = elementName el
-    in  pr <> return ":" <> return ln 
+        nm = M.lookup "name" $ elementAttributes el
+    in  pr <> return ":" <> return ln  <> return "   " <> nm
 showNode (NodeContent c) = Just $ "\"" <> c <> "\""
 showNode (NodeComment c) = Just $ "-- " <> c
 showNode _ = Nothing
